@@ -11,17 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: "13.x"
-      - name: Install firebase-tools
-        run: npm install -g firebase-tools
-      - name: Install functions dependencies
-        run: |
-          cd functions
-          npm install
+      - name: create env file
+        run: echo ${FIREBASE_TOKEN_DEV}>deploy-dev.env
       - name: Deploy firebase
-        run: |
-          firebase use develop --token ${FIREBASE_TOKEN}
-          firebase deploy --token ${FIREBASE_TOKEN}
+        run: docker-compose -f ./deploy-dev-compose.yml up --build
