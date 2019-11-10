@@ -6,10 +6,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
+
     steps:
       - uses: actions/checkout@v1
-      - env:
-          SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
       - name: Run a one-line script
         run: echo Hello, world!
       - name: Run a multi-line script
