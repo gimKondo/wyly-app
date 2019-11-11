@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: create env file
-        run: echo ${FIREBASE_TOKEN_DEV}>deploy-dev.env
+        run: echo "FIREBASE_TOKEN=${FIREBASE_TOKEN}">deploy-dev.env
       - name: Deploy firebase
         run: docker-compose -f ./deploy-dev-compose.yml up --build
