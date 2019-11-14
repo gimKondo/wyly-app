@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_DEV }}
+      WYLY_APP_FIREBASE_TOKEN_DEV: ${{ secrets.FIREBASE_TOKEN_DEV }}
 
     steps:
       - uses: actions/checkout@v1
-      - name: create env file
-        run: echo "FIREBASE_TOKEN=${FIREBASE_TOKEN}">deploy-dev.env
       - name: Deploy firebase
         run: docker-compose -f ./deploy-dev-compose.yml up --build
