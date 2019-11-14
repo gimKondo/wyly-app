@@ -15,4 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Deploy firebase
-        run: docker-compose -f ./deploy-dev-compose.yml up --build
+        run: |
+          docker-compose -f ./deploy-dev-compose.yml build
+          docker-compose -f ./deploy-dev-compose.yml run deploy
