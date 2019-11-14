@@ -7,10 +7,10 @@ Backend of Wyly on Firebase.
 - firebase CLI
 
 ## Setup
-- setup `deploy-dev.env`
+- define environment variable `WYLY_APP_FIREBASE_TOKEN_DEV`
   - get firebase token by `firebase login:ci`
-  - create `deploy-dev.env` file on project root, and write token.
-    - `FIREBASE_TOKEN=1/xxxxxxxxx`
+  - set token to environment variable
+    - `export WYLY_APP_FIREBASE_TOKEN_DEV=1/xxxxxxxxx`
 
 ## Deploy
 - execute `docker-compose -f ./deploy-dev-compose.yml up`
