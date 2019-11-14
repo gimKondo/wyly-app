@@ -8,8 +8,8 @@ RUN npm install -g firebase-tools
 RUN mkdir mount
 WORKDIR /mount
 
-ARG FIREBASE_PROJECT="develop"
-ARG FIREBASE_TOKEN="DUMMY"
+ENV FIREBASE_PROJECT="dummy"
+ENV FIREBASE_TOKEN="DUMMY"
 
 CMD cd functions && npm install && cd ../ \
   && firebase use ${FIREBASE_PROJECT} --token ${FIREBASE_TOKEN} \

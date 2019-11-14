@@ -1,9 +1,9 @@
-version: "2"
+version: "3"
 services:
   deploy:
-    env_file: deploy-dev.env
     environment:
       - FIREBASE_PROJECT=develop
+      - FIREBASE_TOKEN=${WYLY_APP_FIREBASE_TOKEN_DEV}
     build:
       context: ./
       dockerfile: deploy.dockerfile
