@@ -1,0 +1,11 @@
+version: "3"
+services:
+  deploy:
+    environment:
+      - FIREBASE_PROJECT=stage
+      - FIREBASE_TOKEN=${WYLY_APP_FIREBASE_TOKEN_STAGE}
+    build:
+      context: ./
+      dockerfile: deploy.dockerfile
+    volumes:
+      - ./:/mount
