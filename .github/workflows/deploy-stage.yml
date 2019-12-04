@@ -1,0 +1,20 @@
+name: deploy-dev
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      WYLY_APP_FIREBASE_TOKEN_STAGE: ${{ secrets.FIREBASE_TOKEN_STAGE }}
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Deploy firebase
+        run: |
+          docker-compose -f ./deploy-stage-compose.yml build
+          docker-compose -f ./deploy-stage-compose.yml run deploy
