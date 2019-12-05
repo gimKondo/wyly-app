@@ -1,6 +1,11 @@
 name: deploy-dev
 
-on: [push]
+on:
+  push:
+    branches:
+      # all features are deploy to prototype project immediately
+      - "feature/**"
+      - "feat/**"
 
 jobs:
   build:

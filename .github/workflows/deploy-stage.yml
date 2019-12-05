@@ -1,8 +1,9 @@
-name: deploy-dev
+name: deploy-stage
 
 on:
   push:
     branches:
+      # Now, dev branch is treated as stage
       - dev
 
 jobs:
