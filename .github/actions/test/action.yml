@@ -1,0 +1,5 @@
+name: "Test and Lint"
+description: "In future, run test and lint"
+runs:
+  using: "docker"
+  image: "Dockerfile"
