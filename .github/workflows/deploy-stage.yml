@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - uses: ./.github/actions/test
       - name: Deploy firebase
         run: |
           docker-compose -f ./deploy-stage-compose.yml build
