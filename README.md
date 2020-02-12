@@ -21,5 +21,6 @@ Backend of Wyly on Firebase.
 
 ## Deploy
 
-- execute `docker-compose -f ./deploy-xxx-compose.yml run deploy` 
+- execute `docker-compose -f ./deploy-xxx-compose.yml run deploy`
   - 1st time, use `docker-compose -f ./deploy-xxx-compose.yml build` for building docker
+
