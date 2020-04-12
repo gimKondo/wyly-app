@@ -4,12 +4,16 @@ service cloud.firestore {
       allow read, write;
     }
     // posts by others
-    match /{path=**}/users/{userId}/posts/{postId} {
+    match /{path=**}/users/{userId}/posts/{docId} {
       allow read;
     }
     // posts by self
-    match /{path=**}/users/{userId}/posts/{postId} {
+    match /{path=**}/users/{userId}/posts/{docId} {
       allow read, write: if userId == request.auth.uid;
+    }
+    // timelines by self
+    match /{path=**}/users/{userId}/timelines/{docId} {
+      allow read: if userId == request.auth.uid;
     }
   }
 }
