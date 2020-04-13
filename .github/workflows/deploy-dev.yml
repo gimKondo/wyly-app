@@ -15,7 +15,7 @@ jobs:
       WYLY_APP_FIREBASE_TOKEN_DEV: ${{ secrets.FIREBASE_TOKEN_DEV }}
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/test
       - name: Deploy firebase
         run: |
