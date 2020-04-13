@@ -24,3 +24,11 @@ Backend of Wyly on Firebase.
 - execute `docker-compose -f ./deploy-xxx-compose.yml run deploy`
   - 1st time, use `docker-compose -f ./deploy-xxx-compose.yml build` for building docker
 
+<<<<<<< HEAD
+## Firestore
+
+### update indexes by console setting
+
+- execute  `docker-compose -f ./deploy-xxx-compose.yml run deploy sh -c 'firebase firestore:indexes --project $FIREBASE_PROJECT'>firestore.indexes.json`
+=======
+>>>>>>> dev
