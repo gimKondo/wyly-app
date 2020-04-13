@@ -33,7 +33,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
   if (postSnapshot.empty) {
     throw new functions.https.HttpsError('internal', messages.errors.POST_NOT_FOUND);
   }
-  const postRef = snapshotReceipts.docs[0].ref;
+  const postRef = postSnapshot.docs[0].ref;
 
   // create timeline
   const timelineItem = {
