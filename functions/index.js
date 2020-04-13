@@ -6,10 +6,6 @@ const messages = require('./messages').messages;
 const REGION = 'asia-northeast1';
 admin.initializeApp();
 
-exports.helloWorld = functions.region(REGION).https.onRequest((request, response) => {
-  response.send("Hello from AI!");
-});
-
 /**
  * Search around and create timeline item
  *
