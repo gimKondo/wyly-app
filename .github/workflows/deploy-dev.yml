@@ -15,9 +15,22 @@ jobs:
       WYLY_APP_FIREBASE_TOKEN_DEV: ${{ secrets.FIREBASE_TOKEN_DEV }}
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/test
       - name: Deploy firebase
         run: |
           docker-compose -f ./deploy-dev-compose.yml build
           docker-compose -f ./deploy-dev-compose.yml run deploy
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: "Deploy to Dev Firebase"
+          mention: "here"
+          mention_if: "failure"
+          channel: "#wyly-github"
+          icon_emoji: "github"
+          url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
