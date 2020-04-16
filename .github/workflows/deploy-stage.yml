@@ -29,7 +29,7 @@ jobs:
           mention: "here"
           mention_if: "failure"
           channel: "#wyly-github"
-          icon_emoji: "github"
+          icon_emoji: "nyanbo-_firebase"
           url: ${{ secrets.SLACK_WEBHOOK_URL }}
           commit: true
           token: ${{ secrets.GITHUB_TOKEN }}
