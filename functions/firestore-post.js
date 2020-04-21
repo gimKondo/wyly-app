@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const uuidv4 = require('uuid/v4');
 
+const { COLLECTION_NAME } = require('./collection-name');
+
 const firestore = admin.firestore();
 
 /**
