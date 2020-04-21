@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const uuidv4 = require('uuid/v4');
 
-const { pickPostRandomly } = require('./collection-name');
+const { pickPostRandomly } = require('./firestore-post');
 const { MESSAGES } = require('./messages');
 const { COLLECTION_NAME } = require('./collection-name');
 const { TIMELINE_TYPE } = require('./timeline-type');
