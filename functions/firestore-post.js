@@ -18,6 +18,7 @@ const DIRECTION_SEARCH = {
  */
 module.exports.pickPostRandomly = async () => {
   const uuid = uuidv4();
+  console.log(`search key. random:[${uuid}]`);
   const postSnapshot = await getPostByRandomField(uuid, DIRECTION_SEARCH.ASC);
   if (!postSnapshot.empty) {
     return postSnapshot;
