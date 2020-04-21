@@ -1,5 +1,5 @@
 
-module.exports.messages = {
+module.exports.MESSAGES = {
   errors: {
     UNAUTHENTICATED: 'Unauthenticated request',
     BAD_REQUEST: 'Bad request',
