@@ -28,13 +28,14 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
   }
 
   // create timeline
+  const postRef = postSnapshot.docs[0].ref;
   await firestore
     .collection(COLLECTION_NAME.users)
     .doc(context.auth.uid)
     .collection(COLLECTION_NAME.timelines)
     .doc()
     .set({
-      post: postSnapshot.docs[0].ref,
+      post: postRef,
       type: TIMELINE_TYPE.SEARCH,
       createdAt: new Date(),
     });
