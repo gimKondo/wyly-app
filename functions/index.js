@@ -5,6 +5,7 @@ const uuidv4 = require('uuid/v4');
 const { pickPostRandomly } = require('./collection-name');
 const { MESSAGES } = require('./messages');
 const { COLLECTION_NAME } = require('./collection-name');
+const { TIMELINE_TYPE } = require('./timeline-type');
 
 const REGION = 'asia-northeast1';
 admin.initializeApp();
@@ -34,6 +35,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
     .doc()
     .set({
       post: postSnapshot.docs[0].ref,
+      type: TIMELINE_TYPE.SEARCH,
       createdAt: new Date(),
     });
 
