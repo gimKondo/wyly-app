@@ -3,6 +3,7 @@ const functions = require('firebase-functions');
 const uuidv4 = require('uuid/v4');
 
 const messages = require('./messages').messages;
+const { COLLECTION_NAME } = require('./collection-name');
 
 const REGION = 'asia-northeast1';
 admin.initializeApp();
@@ -21,7 +22,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
   // search posts
   // TODO: search randomly
   const postSnapshot = await firestore
-    .collectionGroup('posts')
+    .collectionGroup(COLLECTION_NAME.posts)
     .where('isPublic', '==', true)
     .orderBy('createdAt', 'desc')
     .limit(1)
@@ -39,9 +40,9 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
   };
   const userId = context.auth.uid;
   await firestore
-    .collection('users')
+    .collection(COLLECTION_NAME.users)
     .doc(userId)
-    .collection('timelines')
+    .collection(COLLECTION_NAME.timelines)
     .doc()
     .set(timelineItem);
 
@@ -62,9 +63,9 @@ exports.onCreatePostDocument = functions.region(REGION).firestore.document('user
 
   const firestore = admin.firestore();
   firestore
-    .collection('users')
+    .collection(COLLECTION_NAME.users)
     .doc(userId)
-    .collection('posts')
+    .collection(COLLECTION_NAME.posts)
     .doc(postId)
     .update({random: uuidv4()})
     .then(() => console.debug() )
