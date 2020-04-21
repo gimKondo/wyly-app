@@ -31,20 +31,17 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
   if (postSnapshot.empty) {
     throw new functions.https.HttpsError('internal', messages.errors.POST_NOT_FOUND);
   }
-  const postRef = postSnapshot.docs[0].ref;
 
   // create timeline
-  const timelineItem = {
-    post: postRef,
-    createdAt: new Date(),
-  };
-  const userId = context.auth.uid;
   await firestore
     .collection(COLLECTION_NAME.users)
-    .doc(userId)
+    .doc(context.auth.uid)
     .collection(COLLECTION_NAME.timelines)
     .doc()
-    .set(timelineItem);
+    .set({
+      post: postSnapshot.docs[0].ref,
+      createdAt: new Date(),
+    });
 
   // return found post
   const receiptDoc = await postRef.get();
