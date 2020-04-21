@@ -21,7 +21,6 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
   if (!context.auth) throw new functions.https.HttpsError('unauthenticated', MESSAGES.errors.UNAUTHENTICATED);
 
   // search posts
-  // TODO: search randomly
   const postSnapshot = await pickPostRandomly();
   if (postSnapshot.empty) {
     throw new functions.https.HttpsError('internal', MESSAGES.errors.POST_NOT_FOUND);
@@ -39,12 +38,8 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
     });
 
   // return found post
-  const postDoc = await postRef.get();
-  return {
-    name: postDoc.name,
-    imagePath: postDoc.imagePath,
-    createdAt: postDoc.createdAt,
-  };
+  const { name, imagePath, createdAt } = await postRef.get();
+  return { name, imagePath, createdAt };
 });
 
 /**
