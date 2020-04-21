@@ -7,6 +7,7 @@ const { COLLECTION_NAME } = require('./collection-name');
 
 const REGION = 'asia-northeast1';
 admin.initializeApp();
+const firestore = admin.firestore();
 
 /**
  * Search around and create timeline item
@@ -17,17 +18,10 @@ admin.initializeApp();
  */
 exports.searchAround = functions.region(REGION).https.onCall(async (data, context) => {
   if (!context.auth) throw new functions.https.HttpsError('unauthenticated', messages.errors.UNAUTHENTICATED);
-  const firestore = admin.firestore();
 
   // search posts
   // TODO: search randomly
-  const postSnapshot = await firestore
-    .collectionGroup(COLLECTION_NAME.posts)
-    .where('isPublic', '==', true)
-    .orderBy('createdAt', 'desc')
-    .limit(1)
-    .get();
-
+  const postSnapshot = await pickPostRandomly();
   if (postSnapshot.empty) {
     throw new functions.https.HttpsError('internal', messages.errors.POST_NOT_FOUND);
   }
@@ -51,6 +45,42 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
     createdAt: receiptDoc.createdAt,
   };
 });
+
+/**
+ * Direction search operator and order
+ */
+const DIRECTION_SEARCH = {
+  ASC: {whereOp: '>', order: 'asc'},
+  DESC: {whereOp: '<=', order: 'desc'},
+}
+
+/**
+ * pick post randomly
+ */
+const pickPostRandomly = async () => {
+  const uuid = uuidv4();
+  const postSnapshot = await getPostByRandomField(uuid, DIRECTION_SEARCH.ASC);
+  if (!postSnapshot.empty) {
+    return postSnapshot;
+  }
+  return await await getPostByRandomField(uuid, DIRECTION_SEARCH.DESC);
+}
+
+/**
+ * get post by random field
+ * @param {String} uuid search key
+ * @param {String} whereOp '>' or '<='
+ * @param {String} orderDirection 'asc' or 'desc'
+ */
+const getPostByRandomField = async (uuid, {whereOp, order}) => {
+  return await firestore
+    .collectionGroup(COLLECTION_NAME.posts)
+    .where('isPublic', '==', true)
+    .where('random', whereOp, uuid)
+    .orderBy('random', order)
+    .limit(1)
+    .get();
+}
 
 /**
  * Add random field when Post document is created
