@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
+const uuidv4 = require('uuid/v4');
 
 const messages = require('./messages').messages;
 
@@ -36,10 +37,10 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
     post: postRef,
     createdAt: new Date(),
   };
-  const authId = context.auth.uid;
+  const userId = context.auth.uid;
   await firestore
     .collection('users')
-    .doc(authId)
+    .doc(userId)
     .collection('timelines')
     .doc()
     .set(timelineItem);
@@ -51,4 +52,21 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
     imagePath: receiptDoc.imagePath,
     createdAt: receiptDoc.createdAt,
   };
+});
+
+/**
+ * Add random field when Post document is created
+ */
+exports.onCreatePostDocument = functions.region(REGION).firestore.document('users/{userId}/posts/{postId}').onCreate(async (snap, context) => {
+  const { userId, postId } = context.params;
+
+  const firestore = admin.firestore();
+  firestore
+    .collection('users')
+    .doc(userId)
+    .collection('posts')
+    .doc(postId)
+    .update({random: uuidv4()})
+    .then(() => console.debug() )
+    .catch(err => console.error(`fail to add random field at post. err:[${err}]`));
 });
