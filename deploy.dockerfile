@@ -1,5 +1,5 @@
 
-FROM node:10-alpine
+FROM node:13-alpine
 
 RUN apk update
 RUN apk add git

@@ -29,6 +29,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
 
   // create timeline
   const postRef = postSnapshot.docs[0].ref;
+  const contributorRef = postRef.parent.parent;
   await firestore
     .collection(COLLECTION_NAME.users)
     .doc(context.auth.uid)
@@ -38,6 +39,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
       post: postRef,
       type: TIMELINE_TYPE.SEARCH,
       createdAt: new Date(),
+      contributor: contributorRef,
     });
 
   // return found post
