@@ -44,6 +44,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
 
   // return found post
   const { name, imagePath, createdAt } = await postRef.get();
+  console.log(`found post. name:[${name}] imagePath:[${imagePath}] createdAt:[${createdAt}]`);
   return { name, imagePath, createdAt };
 });
 
