@@ -1,4 +1,4 @@
-const admin = require('firebase-admin');
+import * as admin from 'firebase-admin';
 const { v4: uuidv4 } = require('uuid');
 
 const { COLLECTION_NAME } = require('./collection-name');
@@ -9,8 +9,8 @@ const firestore = admin.firestore();
  * Direction search operator and order
  */
 const DIRECTION_SEARCH = {
-  ASC: {whereOp: '>', order: 'asc'},
-  DESC: {whereOp: '<=', order: 'desc'},
+  ASC: { whereOp: '>', order: 'asc' },
+  DESC: { whereOp: '<=', order: 'desc' },
 }
 
 /**
@@ -32,7 +32,7 @@ module.exports.pickPostRandomly = async () => {
  * @param {String} whereOp '>' or '<='
  * @param {String} orderDirection 'asc' or 'desc'
  */
-const getPostByRandomField = async (uuid, {whereOp, order}) => {
+const getPostByRandomField = async (uuid: string, { whereOp, order }: any) => {
   return await firestore
     .collectionGroup(COLLECTION_NAME.posts)
     .where('isPublic', '==', true)
