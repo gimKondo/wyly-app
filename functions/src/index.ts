@@ -1,5 +1,6 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+// const functions = require('firebase-functions');
 const { v4: uuidv4 } = require('uuid');
 
 admin.initializeApp();
@@ -56,13 +57,12 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
 exports.onCreatePostDocument = functions.region(REGION).firestore.document('users/{userId}/posts/{postId}').onCreate(async (snap, context) => {
   const { userId, postId } = context.params;
 
-  const firestore = admin.firestore();
   firestore
     .collection(COLLECTION_NAME.users)
     .doc(userId)
     .collection(COLLECTION_NAME.posts)
     .doc(postId)
-    .update({random: uuidv4()})
-    .then(() => console.debug() )
+    .update({ random: uuidv4() })
+    .then(() => console.debug())
     .catch(err => console.error(`fail to add random field at post. err:[${err}]`));
 });
