@@ -14,7 +14,7 @@ const firestore = admin.firestore();
 /**
  * Create user and user profile document on signing up
  */
-exports.searchAround = functions.region(REGION).auth.user().onCreate(async (user) => {
+exports.onCreateUser = functions.region(REGION).auth.user().onCreate(async (user) => {
   const batch = firestore.batch();
 
   batch.set(firestore.doc(`users/${user.uid}`), {
