@@ -1,7 +1,5 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { firebaseConfig } from 'firebase-functions';
-// const functions = require('firebase-functions');
 const { v4: uuidv4 } = require('uuid');
 
 admin.initializeApp();
