@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { firebaseConfig } from 'firebase-functions';
 // const functions = require('firebase-functions');
 const { v4: uuidv4 } = require('uuid');
 
@@ -11,6 +12,27 @@ const { TIMELINE_TYPE } = require('./timeline-type');
 
 const REGION = 'asia-northeast1';
 const firestore = admin.firestore();
+
+/**
+ * Create user and user profile document on signing up
+ */
+exports.searchAround = functions.region(REGION).auth.user().onCreate(async (user) => {
+  const batch = firestore.batch();
+
+  batch.set(firestore.doc(`users/${user.uid}`), {
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  batch.set(firestore.doc(`public-profiles/${user.uid}`), {
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  await batch.commit();
+});
 
 /**
  * Search around and create timeline item
