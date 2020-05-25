@@ -5,8 +5,8 @@ service cloud.firestore {
     match /users/{uid} {
       allow get: if request.auth != null && uid == request.auth.uid;
     }
-    // user profile (public)
-    match /public-profiles/{uid} {
+    // user profile
+    match /profiles/{uid} {
       allow read;
     }
     // posts
