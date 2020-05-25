@@ -17,12 +17,12 @@ const firestore = admin.firestore();
 exports.onCreateUser = functions.region(REGION).auth.user().onCreate(async (user) => {
   const batch = firestore.batch();
 
-  batch.set(firestore.doc(`users/${user.uid}`), {
+  batch.set(firestore.doc(`${COLLECTION_NAME.users}/${user.uid}`), {
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     updatedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
-  batch.set(firestore.doc(`public-profiles/${user.uid}`), {
+  batch.set(firestore.doc(`${COLLECTION_NAME.profiles}/${user.uid}`), {
     displayName: user.displayName,
     photoURL: user.photoURL,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
