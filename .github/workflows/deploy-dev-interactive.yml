@@ -1,0 +1,35 @@
+name: deploy dev interactively
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  deploy:
+    # comment of pull request && contains KEYWORD
+    if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '@github deploy')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "dev"
+      - name: Deploy firebase
+        run: |
+          docker-compose -f ./deploy-dev-compose.yml build
+          docker-compose -f ./deploy-dev-compose.yml run deploy
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: "Deploy to Dev Firebase"
+          mention: "here"
+          mention_if: "failure"
+          channel: "#wyly-github"
+          icon_emoji: "nyanbo-_firebase"
+          username: "Nyanbo-F"
+          url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
