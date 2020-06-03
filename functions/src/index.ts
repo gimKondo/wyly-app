@@ -59,7 +59,7 @@ exports.searchAround = functions.region(REGION).https.onCall(async (data, contex
     .set({
       post: postRef,
       type: TIMELINE_TYPE.SEARCH,
-      createdAt: new Date(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
       contributor: contributorRef,
     });
 
