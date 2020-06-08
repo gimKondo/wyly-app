@@ -16,8 +16,14 @@ jobs:
       - uses: actions/github-script@v2
         id: set-result
         with:
-          script: return "Hello!"
+          github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
+          script: |
+            return github.pulls.get({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
       - uses: actions/checkout@v2
         if: github.event.comment.body == '@github deploy-feature'
         with:
