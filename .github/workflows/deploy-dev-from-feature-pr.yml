@@ -1,0 +1,53 @@
+name: deploy dev from feature by pull request
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  deploy:
+    # add comment of pull request && comment is KEYWORD
+    if: (github.event.issue.pull_request != null) && github.event.comment.body == '@github deploy-feature'
+    runs-on: ubuntu-latest
+
+    steps:
+      # @github deploy-feature: check out feature
+      - uses: actions/github-script@v2
+        id: set-target-branch
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            const pull_request = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            })
+            return pull_request.data.head.ref
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.set-target-branch.outputs.result }}
+      - name: Show branch info
+        if: github.event.comment.body == '@github deploy-feature'
+        run: |
+          echo "${{ steps.set-target-branch.outputs.result }}"
+      - uses: ./.github/actions/test
+      - name: Deploy firebase
+        run: |
+          docker-compose -f ./deploy-dev-compose.yml build
+          docker-compose -f ./deploy-dev-compose.yml run deploy
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: "Deploy to Dev Firebase (${{ steps.set-target-branch.outputs.result }})"
+          mention: "here"
+          mention_if: "failure"
+          channel: "#wyly-github"
+          icon_emoji: "nyanbo-_firebase"
+          username: "Nyanbo-F"
+          url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
