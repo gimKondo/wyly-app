@@ -34,4 +34,4 @@ jobs:
           REQUEST: ${{ toJSON(github.event) }}
         run: |
           echo "$REQUEST"
-          echo "${{steps.set-result.outputs.result}}"
+          echo "${{ toJson(steps.set-result.outputs.result) }}"
