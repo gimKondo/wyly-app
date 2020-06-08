@@ -8,14 +8,13 @@ on:
 jobs:
   deploy:
     # add comment of pull request && comment is KEYWORD
-    if: (github.event.issue.pull_request != null) && github.event.comment.body == '@github deploy-feature'
+    if: (github.event.issue.pull_request != null) && github.event.comment.body == '!github deploy-feature'
     runs-on: ubuntu-latest
 
     env:
       WYLY_APP_FIREBASE_TOKEN_DEV: ${{ secrets.FIREBASE_TOKEN_DEV }}
 
     steps:
-      # @github deploy-feature: check out feature
       - uses: actions/github-script@v2
         id: set-target-branch
         with:
@@ -31,10 +30,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ steps.set-target-branch.outputs.result }}
-      - name: Show branch info
-        if: github.event.comment.body == '@github deploy-feature'
-        run: |
-          echo "${{ steps.set-target-branch.outputs.result }}"
       - uses: ./.github/actions/test
       - name: Deploy firebase
         run: |
