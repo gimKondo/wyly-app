@@ -1,0 +1,39 @@
+name: deploy dev to rollback dev by pull request
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  deploy:
+    # add comment of pull request && comment is KEYWORD
+    if: (github.event.issue.pull_request != null) && github.event.comment.body == '@github deploy-dev'
+    runs-on: ubuntu-latest
+
+    env:
+      WYLY_APP_FIREBASE_TOKEN_DEV: ${{ secrets.FIREBASE_TOKEN_DEV }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: dev
+      - uses: ./.github/actions/test
+      - name: Deploy firebase
+        run: |
+          docker-compose -f ./deploy-dev-compose.yml build
+          docker-compose -f ./deploy-dev-compose.yml run deploy
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: "Deploy to Dev Firebase (${{ github.event.comment.body }})"
+          mention: "here"
+          mention_if: "failure"
+          channel: "#wyly-github"
+          icon_emoji: "nyanbo-_firebase"
+          username: "Nyanbo-F"
+          url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
