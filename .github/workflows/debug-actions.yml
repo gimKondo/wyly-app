@@ -20,9 +20,15 @@ jobs:
           result-encoding: string
           script: |
             return github.pulls.get({
+<<<<<<< Updated upstream
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo
+=======
+              context.repo.owner,
+              context.repo.repo,
+              context.issue.number
+>>>>>>> Stashed changes
             })
       - uses: actions/checkout@v2
         if: github.event.comment.body == '@github deploy-feature'
