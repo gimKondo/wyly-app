@@ -13,6 +13,11 @@ jobs:
 
     steps:
       # @github deploy-feature: check out feature
+      - uses: actions/github-script@v2
+        id: set-result
+        with:
+          script: return "Hello!"
+          result-encoding: string
       - uses: actions/checkout@v2
         if: github.event.comment.body == '@github deploy-feature'
         with:
@@ -23,3 +28,4 @@ jobs:
           REQUEST: ${{ toJSON(github.event) }}
         run: |
           echo "$REQUEST"
+          echo "${{steps.set-result.outputs.result}}"
