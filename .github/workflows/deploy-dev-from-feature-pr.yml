@@ -11,6 +11,9 @@ jobs:
     if: (github.event.issue.pull_request != null) && github.event.comment.body == '@github deploy-feature'
     runs-on: ubuntu-latest
 
+    env:
+      WYLY_APP_FIREBASE_TOKEN_DEV: ${{ secrets.FIREBASE_TOKEN_DEV }}
+
     steps:
       # @github deploy-feature: check out feature
       - uses: actions/github-script@v2
