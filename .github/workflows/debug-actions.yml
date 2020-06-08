@@ -17,13 +17,14 @@ jobs:
         id: set-result
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          # result-encoding: string
+          result-encoding: string
           script: |
-            return github.pulls.get({
+            const pull_request = await github.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
             })
+            return pull_request.head.ref
       - uses: actions/checkout@v2
         if: github.event.comment.body == '@github deploy-feature'
         with:
