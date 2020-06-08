@@ -23,3 +23,6 @@ jobs:
           REQUEST: ${{ toJSON(github.event) }}
         run: |
           echo "$REQUEST"
+      - name: test echo
+        run: |
+          echo "test"
