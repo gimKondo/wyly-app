@@ -20,6 +20,6 @@ jobs:
       - name: dump event info
         if: github.event.comment.body == '@github deploy-feature'
         env:
-          REQUEST: ${{ toJSON(github.event.pull_request.head) }}
+          REQUEST: ${{ toJSON(github.event) }}
         run: |
           echo "$REQUEST"
