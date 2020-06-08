@@ -1,0 +1,25 @@
+name: dump actions request
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  deploy:
+    # add comment of pull request && comment is KEYWORD
+    if: (github.event.issue.pull_request != null) && (github.event.comment.body == '@github deploy-feature' || github.event.comment.body == '@github deploy-dev')
+    runs-on: ubuntu-latest
+
+    steps:
+      # @github deploy-feature: check out feature
+      - uses: actions/checkout@v2
+        if: github.event.comment.body == '@github deploy-feature'
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: dump event info
+        if: github.event.comment.body == '@github deploy-feature'
+        env:
+          REQUEST: ${{ toJSON(github.event.pull_request.head) }}
+        run: |
+          echo "$REQUEST"
