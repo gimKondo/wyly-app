@@ -33,13 +33,6 @@ exports.onCreateUser = functions.region(REGION).auth.user().onCreate(async (user
 });
 
 /**
- * Dummy
- */
-exports.dummy = functions.region(REGION).https.onCall(async (data, context) => {
-  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', MESSAGES.errors.UNAUTHENTICATED);
-});
-
-/**
  * Search around and create timeline item
  *
  * 1. search post randomly from all posts
