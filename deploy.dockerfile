@@ -13,4 +13,4 @@ ENV FIREBASE_TOKEN="DUMMY"
 
 CMD cd functions && npm install && cd ../ \
   && firebase use ${FIREBASE_PROJECT} --token ${FIREBASE_TOKEN} \
-  && firebase deploy --token ${FIREBASE_TOKEN}
+  && firebase deploy --force --token ${FIREBASE_TOKEN}
